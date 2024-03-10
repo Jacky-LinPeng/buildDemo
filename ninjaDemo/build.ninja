@@ -1,0 +1,22 @@
+# 定义编译器和编译选项
+CC = clang
+CFLAGS = -fobjc-arc
+
+# 定义目标文件和可执行文件
+target = MyApp
+
+rule compile
+  command = $CC $CFLAGS -c $in -o $out
+
+rule link
+  command = $CC $in -o $out -framework Foundation
+
+rule clean
+  command = rm -f $target *.o
+
+build $target: link main.o MyClass.o
+
+build main.o: compile main.m
+build MyClass.o: compile MyClass.m
+
+build clean: clean
